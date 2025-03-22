@@ -9,9 +9,9 @@ import { ThrottlerModule } from '@nestjs/throttler';
       throttlers: [
         {
           ttl: 60000,
-          limit: 10
-        }
-      ]
+          limit: 10,
+        },
+      ],
     }),
     ClientsModule.register([
       {
@@ -19,7 +19,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
         transport: Transport.TCP,
         options: {
           host: 'localhost',
-          port: 3001
+          port: 3001,
         },
       },
     ]),

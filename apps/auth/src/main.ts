@@ -3,6 +3,10 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AuthModule } from './auth.module';
 
 async function bootstrap() {
+  // Set environment variables
+  process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+  process.env.DATABASE_URL = process.env.DATABASE_URL || 'file:./auth.db';
+
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AuthModule,
     {
@@ -15,4 +19,7 @@ async function bootstrap() {
   );
   await app.listen();
 }
-bootstrap();
+
+bootstrap().catch((trace) => {
+  console.error(trace);
+});
