@@ -5,6 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { LoginUserDTO } from '@app/dtos';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ENV } from '../constants';
+import { throwError } from 'rxjs';
 
 describe('AuthSvcController', () => {
   let controller: AuthSvcController;
@@ -45,8 +46,8 @@ describe('AuthSvcController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('loginUser', () => {
-    it('should call authSvc.send with the correct arguments and return the result', async () => {
+  
+    it('[/auth/login] - it should call authSvc.send with login_user', async () => {
       const loginUserDto: LoginUserDTO = {
         email: 'ajay@ict.in',
         password: 'password',
@@ -62,5 +63,21 @@ describe('AuthSvcController', () => {
         data: loginUserDto,
       });
     });
+  
+  it('[auth/login] - it should handle errors', async () => {
+    const loginUserDto: LoginUserDTO = {
+      email: 'ajay@ict.in',
+      password: 'password',
+    };
+
+    jest.spyOn(authSvc, 'send').mockImplementationOnce(() => {
+      return throwError(() => new Error('Invalid command'));
+    });
+
+    try {
+      await controller.getUser(loginUserDto);
+    } catch (error) {
+      expect(error.message).toBe('Invalid command');
+    }
   });
 });
