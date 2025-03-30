@@ -14,13 +14,13 @@ import { ThrottlerGuard } from '@nestjs/throttler';
 import { Response } from 'express';
 import { catchError, throwError } from 'rxjs';
 
-@UseGuards(ThrottlerGuard)
 @Controller('/auth/')
 export class AuthSvcController {
   constructor(@Inject('AUTH_SVC') private readonly authSvc: ClientProxy) {}
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
+  @UseGuards(ThrottlerGuard)
   // eslint-disable-next-line @typescript-eslint/require-await
   async getUser(@Body() body: LoginUserDTO) {
     return this.authSvc.send('login_user', body).pipe(

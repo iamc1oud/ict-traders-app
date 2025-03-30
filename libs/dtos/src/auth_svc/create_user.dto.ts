@@ -2,8 +2,8 @@ import { IsEmail, IsStrongPassword } from "class-validator";
 
 export class LoginUserDTO {
     @IsEmail()
-    email: String;
+    email: string;
 
     @IsStrongPassword()
-    password: String;
+    password: string;
  }
